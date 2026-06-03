@@ -16,3 +16,14 @@ def calculo_estatistica(numeros : list) -> dict:
         "p50" : round(float(np.percentile(arr, 50)), 4),
         "p75" : round(float(np.percentile(arr, 75)), 4)   
     }
+
+def calculo_histograma(numeros : list, bins : int) -> dict:
+    
+    arr = np.array(numeros, dtype=float)
+    
+    frequencia, intervalos = np.histogram(arr, bins=bins)
+    
+    return {
+        "Intervalos" : intervalos.tolist(),
+        "Frequencia" : frequencia.tolist()
+    }

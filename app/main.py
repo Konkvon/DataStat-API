@@ -25,5 +25,27 @@ def calculate():
     except Exception as e:
         return jsonify({'Erro': str(e)}), 500
 
+@app.route('/histogram', methods=['POST'])
+def histogram():
+    dados = request.get_json()
+    
+    if not dados or 'numeros' not in dados or 'bins' not in dados:
+        return jsonify({'Erro' : 'Envie um JSON com a chave numeros e bins'}), 400
+
+    numeros = dados['numeros']
+    bins = dados['bins']
+
+    if not isinstance(bins, int) or bins <= 0:
+        return jsonify({'Erro' : 'Bins deve ser um inteiro positivo'}), 400
+
+    if not isinstance(numeros, list) or len(numeros) == 0:
+        return jsonify({'Erro' : 'Numeros deve ser uma lista não vazia'}), 400
+    
+    try:
+        resultado = calculo_histograma(numeros, bins)
+        return jsonify({"Sucesso" : True, "Histograma" : resultado}), 200
+    except Exception as e:
+        return jsonify({'Erro' : str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
