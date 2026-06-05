@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, send_from_directory
 from analyzer import *
-import redis
+
 app = Flask(__name__)
 
 @app.route('/')
