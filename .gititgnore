@@ -190,6 +190,13 @@ cython_debug/
 
 # Scrapy stuff:
 
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Pytest
+.pytest_cache/
+
 # Sphinx documentation
 
 # PyBuilder

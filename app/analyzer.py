@@ -27,3 +27,11 @@ def calculo_histograma(numeros : list, bins : int) -> dict:
         "Intervalos" : intervalos.tolist(),
         "Frequencia" : frequencia.tolist()
     }
+
+def comparar_estatistica(numeros1 : list, numeros2 : list) -> dict:
+    n1 = calculo_estatistica(numeros1)
+    n2 = calculo_estatistica(numeros2)
+    return {
+        chave : (n1[chave], n2[chave]) 
+        for chave in n1.keys()
+    }

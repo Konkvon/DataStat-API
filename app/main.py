@@ -47,5 +47,22 @@ def histogram():
     except Exception as e:
         return jsonify({'Erro' : str(e)}), 500
 
+@app.route('/compare', methods=['POST'])
+def compare():
+    dados = request.get_json()
+    
+    if not dados or 'numeros1' not in dados or 'numeros2' not in dados:
+        return jsonify({'Erro' : 'Envie um JSON com a chave numeros1 e numeros2'}), 400
+    
+    numeros1, numeros2 = dados['numeros1'], dados['numeros2']
+    
+    if not isinstance(numeros1, list) or len(numeros1) == 0:
+        return jsonify({'Erro' : 'Numeros1 deve ser uma lista não vazia'}), 400
+
+    if not isinstance(numeros2, list) or len(numeros2) == 0:
+        return jsonify({'Erro' : 'Numeros2 deve ser uma lista não vazia'}), 400
+    
+    return jsonify({"Sucesso" : True, "Comparacao" : comparar_estatistica(numeros1, numeros2)}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
