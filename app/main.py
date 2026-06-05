@@ -1,7 +1,11 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from analyzer import *
-
+import redis
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return send_from_directory('templates', 'index.html')
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -62,7 +66,11 @@ def compare():
     if not isinstance(numeros2, list) or len(numeros2) == 0:
         return jsonify({'Erro' : 'Numeros2 deve ser uma lista não vazia'}), 400
     
-    return jsonify({"Sucesso" : True, "Comparacao" : comparar_estatistica(numeros1, numeros2)}), 200
-
+    try:
+        resultado = comparar_estatistica(numeros1, numeros2)
+        return jsonify({"Sucesso" : True, "Comparacao" : resultado}), 200
+    except Exception as e:
+        return jsonify({'Erro' : str(e)}), 500
+    
 if __name__ == '__main__':
     app.run(debug=True)
