@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  datastat-api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+
+    container_name: datastat-api
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./app:/app
+
+    environment:
+      FLASK_ENV: development
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+    depends_on:
+      - redis
+
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.4
+
+    container_name: redis
+
+    ports:
+      - "6379:6379"
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
