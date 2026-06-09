@@ -1,0 +1,185 @@
+{
+  "info": {
+    "_postman_id": "49d71db8-8d04-4311-921b-2b1257f91abc",
+    "name": "DataStat API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53714739",
+    "_collection_link": "https://go.postman.co/collection/53714739-49d71db8-8d04-4311-921b-2b1257f91abc?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "/health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/calculate",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"numeros\": [1,2,3,4,5,6] }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/calculate",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "calculate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/histogram",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \r\n    \"numeros\": [1,2,3,4,5,6],\r\n    \"bins\": 4\r\n }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/histogram",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "histogram"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/compare",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \r\n    \"numeros1\": [1,2,3,4,5,6] \r\n    \"numeros2\": [1,2,3,4,5,6] \r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/compare",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "compare"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/history",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \r\n    \"numeros1\": [1,2,3,4,5,6] \r\n    \"numeros2\": [1,2,3,4,5,6] \r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/history",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "history"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/history-clear",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \r\n    \"numeros1\": [1,2,3,4,5,6] \r\n    \"numeros2\": [1,2,3,4,5,6] \r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/history/clear",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "history",
+            "clear"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
