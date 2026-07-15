@@ -47,7 +47,11 @@ def histogram():
     
     try:
         resultado = service.calcular_histograma(numeros, bins)
-        return jsonify({"Sucesso" : True, "Histograma" : resultado}), 200
+        return jsonify({
+            "Sucesso": True,
+            "Histograma": resultado['Histograma'],
+            "Grafico": resultado['Grafico']
+        }), 200
     except Exception as e:
         return jsonify({'Erro' : str(e)}), 500
 
@@ -68,7 +72,7 @@ def compare():
     
     try:
         resultado = service.comparar_estatistica(numeros1, numeros2)
-        return jsonify({"Sucesso" : True, "Comparacao" : resultado}), 200
+        return jsonify({"Sucesso": True, "Comparacao": resultado}), 200
     except Exception as e:
         return jsonify({'Erro' : str(e)}), 500
 

@@ -3,51 +3,85 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Datastat - Frontend</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/styles.css">
+    <title>DataStat API</title>
+    <link rel="stylesheet" href="/static/styles.css" />
   </head>
-  <body class="bg-light">
-    <div class="container py-5">
-      <h1 class="mb-4">DataStat API</h1>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <h1 class="app-title">DataStat API</h1>
+        <p class="app-subtitle">Estatística descritiva, histogramas e comparação de conjuntos numéricos.</p>
+      </header>
 
-      <section class="card mb-4 p-3">
-        <h5>Calcular Estatísticas</h5>
-        <textarea id="nums" class="form-control mb-2" rows="3" placeholder="Digite números separados por vírgula ou espaço"></textarea>
-        <button id="calcBtn" class="btn btn-primary">Calcular</button>
-        <div id="calcResult" class="mt-3 bg-white p-3 border rounded"></div>
-      </section>
-
-      <section class="card mb-4 p-3">
-        <h5>Histograma</h5>
-        <textarea id="histNums" class="form-control mb-2" rows="2" placeholder="Números separados por vírgula ou espaço"></textarea>
-        <input id="bins" class="form-control mb-2" type="number" placeholder="Bins (ex: 5)" />
-        <button id="histBtn" class="btn btn-secondary">Gerar Histograma</button>
-        <div id="histResult" class="mt-3 bg-white p-3 border rounded"></div>
-      </section>
-
-      <section class="card mb-4 p-3">
-        <h5>Comparar Dois Conjuntos</h5>
-        <div class="row">
-          <div class="col">
-            <textarea id="nums1" class="form-control" rows="2" placeholder="Números 1"></textarea>
+      <main class="layout">
+        <section class="workspace">
+          <div class="tabs" role="tablist" aria-label="Operações">
+            <button class="tab" role="tab" id="tab-calc" aria-controls="panel-calc" aria-selected="true" data-tab="calc">Calcular</button>
+            <button class="tab" role="tab" id="tab-hist" aria-controls="panel-hist" aria-selected="false" data-tab="hist" tabindex="-1">Histograma</button>
+            <button class="tab" role="tab" id="tab-cmp" aria-controls="panel-cmp" aria-selected="false" data-tab="cmp" tabindex="-1">Comparar</button>
           </div>
-          <div class="col">
-            <textarea id="nums2" class="form-control" rows="2" placeholder="Números 2"></textarea>
+
+          <!-- Calcular -->
+          <div class="card panel" id="panel-calc" role="tabpanel" aria-labelledby="tab-calc">
+            <h2 class="card-title">Calcular Estatísticas</h2>
+            <p class="card-hint">Média, mediana, desvio-padrão, variância e percentis.</p>
+            <label class="field-label" for="nums">Números</label>
+            <textarea id="nums" class="input" rows="3" placeholder="Ex.: 4, 8, 15, 16, 23, 42"></textarea>
+            <div class="actions">
+              <button id="calcBtn" class="btn btn-primary">Calcular</button>
+            </div>
+            <div id="calcResult" class="result" aria-live="polite"></div>
           </div>
-        </div>
-        <button id="cmpBtn" class="btn btn-success mt-2">Comparar</button>
-        <div id="cmpResult" class="mt-3 bg-white p-3 border rounded"></div>
-      </section>
 
-      <section class="card mb-4 p-3">
-        <h5>Histórico de Operações</h5>
-        <button id="loadHistBtn" class="btn btn-info">Carregar Histórico</button>
-        <button id="clearHistBtn" class="btn btn-danger">Limpar</button>
-        <div id="historyResult" class="mt-3 bg-white p-3 border rounded"></div>
-      </section>
+          <!-- Histograma -->
+          <div class="card panel" id="panel-hist" role="tabpanel" aria-labelledby="tab-hist" hidden>
+            <h2 class="card-title">Histograma</h2>
+            <p class="card-hint">Distribuição de frequência em intervalos (bins).</p>
+            <label class="field-label" for="histNums">Números</label>
+            <textarea id="histNums" class="input" rows="2" placeholder="Ex.: 4, 8, 15, 16, 23, 42"></textarea>
+            <label class="field-label" for="bins">Bins</label>
+            <input id="bins" class="input" type="number" min="1" placeholder="Ex.: 5" />
+            <div class="actions">
+              <button id="histBtn" class="btn btn-primary">Gerar Histograma</button>
+            </div>
+            <div id="histResult" class="result" aria-live="polite"></div>
+          </div>
 
-      <footer class="text-muted small mt-4">Feito por João Pedro Orem de Moura</footer>
+          <!-- Comparar -->
+          <div class="card panel" id="panel-cmp" role="tabpanel" aria-labelledby="tab-cmp" hidden>
+            <h2 class="card-title">Comparar Dois Conjuntos</h2>
+            <p class="card-hint">Métricas lado a lado e comparação visual das distribuições.</p>
+            <div class="grid-2">
+              <div>
+                <label class="field-label" for="nums1">Conjunto 1</label>
+                <textarea id="nums1" class="input" rows="2" placeholder="Ex.: 1, 2, 3"></textarea>
+              </div>
+              <div>
+                <label class="field-label" for="nums2">Conjunto 2</label>
+                <textarea id="nums2" class="input" rows="2" placeholder="Ex.: 4, 5, 6"></textarea>
+              </div>
+            </div>
+            <div class="actions">
+              <button id="cmpBtn" class="btn btn-primary">Comparar</button>
+            </div>
+            <div id="cmpResult" class="result" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <!-- Histórico -->
+        <aside class="card sidebar" aria-label="Histórico de operações">
+          <div class="sidebar-head">
+            <h2 class="card-title">Histórico</h2>
+            <div class="actions actions-compact">
+              <button id="loadHistBtn" class="btn btn-secondary">Recarregar</button>
+              <button id="clearHistBtn" class="btn btn-danger">Limpar</button>
+            </div>
+          </div>
+          <div id="historyResult" class="result" aria-live="polite"></div>
+        </aside>
+      </main>
+
+      <footer class="app-footer">Feito por João Pedro Orem de Moura</footer>
     </div>
 
     <script src="/static/app.js"></script>
