@@ -7,18 +7,19 @@ A DataStat API é uma aplicação web desenvolvida com Flask que oferece funcion
 ## Funcionalidades
 
 - **Cálculo de Estatísticas Descritivas**: Calcula média, mediana, desvio padrão, variância, mínimo, máximo, percentis (25, 50, 75) e contagem para um dado conjunto de números.
-- **Geração de Histograma**: Cria um histograma para um conjunto de números, retornando os intervalos e a frequência de cada bin.
-- **Comparação de Estatísticas**: Compara as estatísticas descritivas de dois conjuntos de números.
-- **Histórico de Operações**: Mantém um registro das últimas 10 operações de análise realizadas.
-- **Interface Web Interativa**: Uma interface de usuário baseada em HTML/CSS/JavaScript para facilitar a interação com a API e a visualização dos resultados.
+- **Geração de Histograma**: Cria um histograma para um conjunto de números, retornando os intervalos e a frequência de cada bin, além de um **gráfico renderizado no servidor** (imagem PNG via seaborn/matplotlib) devolvido como data URI.
+- **Comparação de Estatísticas**: Compara as estatísticas descritivas de dois conjuntos de números (exibida como tabela).
+- **Histórico de Operações**: Mantém um registro das últimas 10 operações de análise realizadas, recarregado automaticamente na interface após cada operação.
+- **Interface Web Interativa**: Interface em HTML/CSS/JavaScript puro (sem framework), com layout em **abas**, tema claro/escuro automático (`prefers-color-scheme`) e visualização dos resultados em tabelas e gráficos.
 
 ## Tecnologias Utilizadas
 
 - **Backend**: Python 3.11 com Flask
 - **Análise Numérica**: NumPy
+- **Plotagem**: seaborn, matplotlib e pandas (gráficos gerados no servidor)
 - **Cache**: Redis (para o histórico de operações)
 - **Containerização**: Docker
-- **Frontend**: HTML, CSS, JavaScript
+- **Frontend**: HTML, CSS e JavaScript vanilla (sem build step)
 
 ## Configuração e Instalação
 
@@ -111,9 +112,12 @@ Gera um histograma para um conjunto de números com um número especificado de b
     "Histograma": {
       "Intervalos": [1.0, 2.3333333333333335, 3.666666666666667, 5.0],
       "Frequencia": [2, 3, 4]
-    }
+    },
+    "Grafico": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg..."
   }
   ```
+
+  O campo `Grafico` é a imagem do histograma (PNG em base64) renderizada no servidor. Se a geração do gráfico falhar por algum motivo, `Grafico` vem como `null` e o cálculo numérico não é afetado (degradação graciosa). A imagem **não** é persistida no histórico.
 
 ### `POST /compare`
 
@@ -183,8 +187,9 @@ Limpa o histórico de operações.
 DataStat-API/
 ├── app/
 │   ├── Dockerfile
-│   ├── analyzer.py
-│   ├── main.py
+│   ├── analyzer.py            # computação NumPy pura (sem efeitos colaterais)
+│   ├── plots.py              # geração dos gráficos server-side (seaborn/matplotlib)
+│   ├── main.py               # rotas Flask + validação
 │   ├── models/
 │   │   └── connection/
 │   │       ├── __init__.py
@@ -196,14 +201,18 @@ DataStat-API/
 │   ├── requirements.txt
 │   ├── services/
 │   │   ├── __init__.py
-│   │   └── data_service.py
+│   │   └── data_service.py   # orquestração (cálculo + plotagem + histórico)
 │   ├── static/
 │   │   ├── app.js
 │   │   └── styles.css
 │   └── templates/
 │       └── index.html
+├── plans/                    # documentos de planejamento
+│   └── FRONTEND_REDESIGN_PLAN.md
 ├── docker-compose.yml
 ├── pytest.ini
+├── CLAUDE.md
+├── .gitignore
 └── tests/
     └── test_analyzer.py
 ```
